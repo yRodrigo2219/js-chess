@@ -1,0 +1,19 @@
+* {
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+    background-color: rgba(71, 28, 3, 0.671);
+}
+
+header {
+    padding: 25px;
+    text-align: center;
+    font-size: 48px;
+    font-weight: bold;
+    background-color: white;
+}
+

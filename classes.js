@@ -34,6 +34,40 @@ function captured(position){
     }
 }
 
+function verticalCheck(initPos, finPos, char){
+    if((finPos - initPos) > 0){
+        for(let n = 1; n < (finPos - initPos); n++){
+            let nextCord = initPos+n;
+            if(board[char][nextCord.toString()] != '') return false;
+        }
+        return true;
+    }else{
+        for(let n = 1; n < (finPos - initPos)*-1 ; n++){
+            let nextCord = initPos-n;
+            if(board[char][nextCord.toString()] != '') return false;
+        }
+        return true;
+    }
+}
+
+function horizontalCheck(initPos, finPos, number){
+    const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
+    if((finPos - initPos) > 0){
+        for(let n = 1; n < (finPos - initPos); n++){
+            let nextCord = initPos+n;
+            if(board[chars[nextCord]][number] != '') return false;
+        }
+        return true;
+    }else{
+        for(let n = 1; n < (finPos - initPos)*-1 ; n++){
+            let nextCord = initPos-n;
+            if(board[chars[nextCord]][number] != '') return false;
+        }
+        return true;
+    }
+}
+
 class Piece {
     constructor(piece, position, squareColor, team){
         this.piece = piece;
@@ -100,8 +134,8 @@ class Pawn extends Piece {
         if(this.piece === wPawn){
             if(momentCharIndex+1 === charIndex){
                 if((momentNumber === number && board[char][number] === '') ||
-                    (momentNumber+1 === number && board[char][number] != '') ||
-                    (momentNumber-1 === number && board[char][number] != '')){
+                    (momentNumber+1 === number && board[char][number].team === 'black') ||
+                    (momentNumber-1 === number && board[char][number].team === 'black')){
 
                         this.exclude();
 
@@ -117,7 +151,7 @@ class Pawn extends Piece {
                     }
             }else if(this.firstMove){ // Se for o 1 movimento
                 if(momentCharIndex+2 === charIndex){
-                    if(momentNumber === number && board[char][number] === ''){
+                    if(momentNumber === number && horizontalCheck(momentCharIndex, charIndex, number)){
                         this.exclude();
     
                         this.position = position;
@@ -133,8 +167,8 @@ class Pawn extends Piece {
         }else{
             if(momentCharIndex-1 === charIndex){
                 if((momentNumber === number && board[char][number] === '') ||
-                    (momentNumber+1 === number && board[char][number] != '') ||
-                    (momentNumber-1 === number && board[char][number] != '')){
+                    (momentNumber+1 === number && board[char][number].team === 'white') ||
+                    (momentNumber-1 === number && board[char][number].team === 'white')){
 
                         this.exclude();
 
@@ -150,7 +184,7 @@ class Pawn extends Piece {
                     }
             }else if(this.firstMove){ // Se for o 1 movimento
                 if(momentCharIndex-2 === charIndex){
-                    if(momentNumber === number && board[char][number] === ''){
+                    if(momentNumber === number && horizontalCheck(momentCharIndex, charIndex, number)){
                         this.exclude();
     
                         this.position = position;
@@ -232,14 +266,43 @@ class Tower extends Piece {
         super.exclude();
     }
 
-    move(pos){
-        this.exclude();
+    move(position){
+        const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
-        this.position = pos;
-        this.squareColor = positionToSquareColor(pos);
-        captured(pos);
+        let char = position.substring(0, 1);
+        let charIndex = chars.indexOf(char);
 
-        this.draw();
+        let number = position.substring(1, 2);
+        number = parseInt(number);
+
+        let momentChar = this.position.substring(0, 1);
+        let momentCharIndex = chars.indexOf(momentChar);
+
+        let momentNumber = this.position.substring(1, 2);
+        momentNumber = parseInt(momentNumber);
+
+        if(char === momentChar && board[char][number].team != this.team){
+            if(verticalCheck(momentNumber, number, char)){
+                this.exclude();
+
+                this.position = position;
+                this.squareColor = positionToSquareColor(position);
+                captured(position);
+
+                this.draw();
+            }
+        }else if(number === momentNumber && board[char][number].team != this.team){
+            if(horizontalCheck(momentCharIndex, charIndex, number)){
+                this.exclude();
+
+                this.position = position;
+                this.squareColor = positionToSquareColor(position);
+                captured(position);
+
+                this.draw();
+            }
+        }
+        
     }
 
 }

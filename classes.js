@@ -34,12 +34,11 @@ function captured(position){
     }
 }
 
-class Pawn {
+class Piece {
     constructor(piece, position, squareColor, team){
         this.piece = piece;
         this.position = position;
         this.squareColor = squareColor;
-        this.firstMove = true;
         this.team = team;
     }
 
@@ -64,6 +63,22 @@ class Pawn {
             const number = square.substring(1, 2);
             board[char][number] = '';
         });
+    }
+
+}
+
+class Pawn extends Piece {
+    constructor(piece, position, squareColor, team){
+        super(piece, position, squareColor, team);
+        this.firstMove = true;
+    }
+
+    draw(){
+        super.draw();
+    }
+
+    exclude(){
+        super.exclude();
     }
 
     move(position){
@@ -154,35 +169,17 @@ class Pawn {
 
 }
 
-class Queen {
+class Queen extends Piece {
     constructor(piece, position, squareColor, team){
-        this.piece = piece;
-        this.position = position;
-        this.squareColor = squareColor;
-        this.team = team;
+        super(piece, position, squareColor, team);
     }
 
     draw(){
-        convertPosition(this.position, (xPos, yPos)=>{
-            ctx.drawImage(this.piece, xPos, yPos, 87.5, 87.5);
-
-            const square = this.position;
-            const char = square.substring(0, 1);
-            const number = square.substring(1, 2);
-            board[char][number] = this;
-        });
+        super.draw();
     }
 
     exclude(){
-        convertPosition(this.position, (xPos, yPos)=>{
-            ctx.fillStyle = this.squareColor;
-            ctx.fillRect(xPos, yPos, 87.5, 87.5);
-
-            const square = this.position;
-            const char = square.substring(0, 1);
-            const number = square.substring(1, 2);
-            board[char][number] = '';
-        });
+        super.exclude();
     }
 
     move(pos){
@@ -197,35 +194,17 @@ class Queen {
 
 }
 
-class King {
+class King extends Piece {
     constructor(piece, position, squareColor, team){
-        this.piece = piece;
-        this.position = position;
-        this.squareColor = squareColor;
-        this.team = team;
+        super(piece, position, squareColor, team);
     }
 
     draw(){
-        convertPosition(this.position, (xPos, yPos)=>{
-            ctx.drawImage(this.piece, xPos, yPos, 87.5, 87.5);
-
-            const square = this.position;
-            const char = square.substring(0, 1);
-            const number = square.substring(1, 2);
-            board[char][number] = this;
-        });
+        super.draw();
     }
 
     exclude(){
-        convertPosition(this.position, (xPos, yPos)=>{
-            ctx.fillStyle = this.squareColor;
-            ctx.fillRect(xPos, yPos, 87.5, 87.5);
-
-            const square = this.position;
-            const char = square.substring(0, 1);
-            const number = square.substring(1, 2);
-            board[char][number] = '';
-        });
+        super.exclude();
     }
 
     move(pos){
@@ -240,35 +219,17 @@ class King {
 
 }
 
-class Tower {
+class Tower extends Piece {
     constructor(piece, position, squareColor, team){
-        this.piece = piece;
-        this.position = position;
-        this.squareColor = squareColor;
-        this.team = team;
+        super(piece, position, squareColor, team);
     }
 
     draw(){
-        convertPosition(this.position, (xPos, yPos)=>{
-            ctx.drawImage(this.piece, xPos, yPos, 87.5, 87.5);
-
-            const square = this.position;
-            const char = square.substring(0, 1);
-            const number = square.substring(1, 2);
-            board[char][number] = this;
-        });
+        super.draw();
     }
 
     exclude(){
-        convertPosition(this.position, (xPos, yPos)=>{
-            ctx.fillStyle = this.squareColor;
-            ctx.fillRect(xPos, yPos, 87.5, 87.5);
-
-            const square = this.position;
-            const char = square.substring(0, 1);
-            const number = square.substring(1, 2);
-            board[char][number] = '';
-        });
+        super.exclude();
     }
 
     move(pos){
@@ -283,35 +244,17 @@ class Tower {
 
 }
 
-class Horse {
+class Horse extends Piece {
     constructor(piece, position, squareColor, team){
-        this.piece = piece;
-        this.position = position;
-        this.squareColor = squareColor;
-        this.team = team;
+        super(piece, position, squareColor, team);
     }
 
     draw(){
-        convertPosition(this.position, (xPos, yPos)=>{
-            ctx.drawImage(this.piece, xPos, yPos, 87.5, 87.5);
-
-            const square = this.position;
-            const char = square.substring(0, 1);
-            const number = square.substring(1, 2);
-            board[char][number] = this;
-        });
+        super.draw();
     }
 
     exclude(){
-        convertPosition(this.position, (xPos, yPos)=>{
-            ctx.fillStyle = this.squareColor;
-            ctx.fillRect(xPos, yPos, 87.5, 87.5);
-
-            const square = this.position;
-            const char = square.substring(0, 1);
-            const number = square.substring(1, 2);
-            board[char][number] = '';
-        });
+        super.exclude();
     }
 
     move(pos){
@@ -326,35 +269,17 @@ class Horse {
 
 }
 
-class Bishop {
+class Bishop extends Piece {
     constructor(piece, position, squareColor, team){
-        this.piece = piece;
-        this.position = position;
-        this.squareColor = squareColor;
-        this.team = team;
+        super(piece, position, squareColor, team);
     }
 
     draw(){
-        convertPosition(this.position, (xPos, yPos)=>{
-            ctx.drawImage(this.piece, xPos, yPos, 87.5, 87.5);
-
-            const square = this.position;
-            const char = square.substring(0, 1);
-            const number = square.substring(1, 2);
-            board[char][number] = this;
-        });
+        super.draw();
     }
 
     exclude(){
-        convertPosition(this.position, (xPos, yPos)=>{
-            ctx.fillStyle = this.squareColor;
-            ctx.fillRect(xPos, yPos, 87.5, 87.5);
-
-            const square = this.position;
-            const char = square.substring(0, 1);
-            const number = square.substring(1, 2);
-            board[char][number] = '';
-        });
+        super.exclude();
     }
 
     move(pos){

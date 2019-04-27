@@ -1,5 +1,7 @@
+var pieceSelected = '';
+
 function startListeners(){
-    canvas.addEventListener('mousedown', holding);
+    canvas.addEventListener('click', select);
     canvas.addEventListener('mousemove', piece);
     canvas.addEventListener('mouseup', drop);
 }
@@ -10,20 +12,35 @@ function getMouesPosition(pos) {
     return {x: mouseX, y: mouseY};
 }
 
-function holding(){
-
+function select(pos){
+    let square = piece(pos);
+    if(square != 'out'){
+        if(pieceSelected === ''){
+            const char = square.substring(0, 1);
+            const number = square.substring(1, 2);
+            pieceSelected = board[char][number];
+        }else{
+            console.log(pieceSelected);
+            pieceSelected.move(square);
+            pieceSelected = '';
+        }
+    }else{
+        pieceSelected = '';
+    }
+    console.log(pieceSelected);
 }
 
 function piece(pos){
     const position = getMouesPosition(pos);
     const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
     
-    if(position.x >= 350){
+    if(position.x >= 350 && position.x < 1050){
         const charIndex = Math.floor(position.x / 87.5) - 4;
         const number = Math.floor(position.y / 87.5);
         
         return chars[charIndex] + number;
     }
+    return 'out';
 }
 
 function drop(){

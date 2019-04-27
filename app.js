@@ -1,6 +1,5 @@
 const canvas = document.getElementById('board');
 const ctx = canvas.getContext('2d');
-const board = [];
 
 const wPawn0 = new Pawn();  const bPawn0 = new Pawn();
 const wPawn1 = new Pawn();  const bPawn1 = new Pawn();
@@ -35,71 +34,98 @@ function startBoard(){
         let yPos = 0;
 
         // White Pieces
-        let wPawn = document.getElementById('whitePawn');
-        let wTower = document.getElementById('whiteTower');
-        let wBishop = document.getElementById('whiteBishop');
-        let wKingI = document.getElementById('whiteKing');
-        let wQueenI = document.getElementById('whiteQueen');
-        let wHorse = document.getElementById('whiteHorse');
+        const wPawn = document.getElementById('whitePawn');
+        const wTower = document.getElementById('whiteTower');
+        const wBishop = document.getElementById('whiteBishop');
+        const wKingI = document.getElementById('whiteKing');
+        const wQueenI = document.getElementById('whiteQueen');
+        const wHorse = document.getElementById('whiteHorse');
         
 
         // Black Pieces
-        let bPawn = document.getElementById('blackPawn');
-        let bTower = document.getElementById('blackTower');
-        let bBishop = document.getElementById('blackBishop');
-        let bKingI = document.getElementById('blackKing');
-        let bQueenI = document.getElementById('blackQueen');
-        let bHorse = document.getElementById('blackHorse');
+        const bPawn = document.getElementById('blackPawn');
+        const bTower = document.getElementById('blackTower');
+        const bBishop = document.getElementById('blackBishop');
+        const bKingI = document.getElementById('blackKing');
+        const bQueenI = document.getElementById('blackQueen');
+        const bHorse = document.getElementById('blackHorse');
 
         let chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
         for(let w = 0; w < 8; w++){
             let colls = [];
             for(let h = 0; h < 8; h++){
                 colls[h] = chars[w] + h;
+                let sColor;
 
                 if((w+h)%2 === 0){
-                ctx.fillStyle = "white";
+                    sColor = "white";
+                    ctx.fillStyle = sColor;
                 }else{
-                    ctx.fillStyle = "#8B4513";
+                    sColor = "#8B4513";
+                    ctx.fillStyle = sColor;
                 }
                     
                 ctx.fillRect(xPos, yPos, 87.5, 87.5);        
 
                 switch(w){
                     case 1:
-                        eval(`wPawn${h}.draw(wPawn, colls[h])`);
+                        eval(`wPawn${h}.piece = wPawn;wPawn${h}.position = colls[h];wPawn${h}.squareColor = sColor;wPawn${h}.draw();`);
                         break;
                     case 6:
-                        eval(`bPawn${h}.draw(bPawn, colls[h])`);
+                        eval(`bPawn${h}.piece = bPawn;bPawn${h}.position = colls[h];bPawn${h}.squareColor = sColor;bPawn${h}.draw();`);
                         break;
                     case 0:
                         if(h === 0 || h === 7){
-                            h === 0 ? wTower0.draw(wTower, colls[h]) : wTower1.draw(wTower, colls[h]);
+                            if(h === 0){
+                                wTower0.piece = wTower; wTower0.position = colls[h]; wTower0.squareColor = sColor; wTower0.draw();
+                            }else{
+                                wTower1.piece = wTower; wTower1.position = colls[h]; wTower1.squareColor = sColor; wTower1.draw();
+                            }
                         }else if(h === 1 || h === 6){
-                            h === 1 ? wHorse0.draw(wHorse, colls[h]) : wHorse1.draw(wHorse, colls[h]);
+                            if(h === 1){
+                                wHorse0.piece = wHorse; wHorse0.position = colls[h]; wHorse0.squareColor = sColor; wHorse0.draw();
+                            }else{
+                                wHorse1.piece = wHorse; wHorse1.position = colls[h]; wHorse1.squareColor = sColor; wHorse1.draw();
+                            }
                         }else if(h === 2 || h === 5){
-                            h === 2 ? wBishop0.draw(wBishop, colls[h]) : wBishop1.draw(wBishop, colls[h]);
+                            if(h === 2){
+                                wBishop0.piece = wBishop; wBishop0.position = colls[h]; wBishop0.squareColor = sColor; wBishop0.draw();
+                            }else{
+                                wBishop1.piece = wBishop; wBishop1.position = colls[h]; wBishop1.squareColor = sColor; wBishop1.draw();
+                            }
                         }else if(h === 4){
-                            wQueen.draw(wQueenI, colls[h]);
+                            wQueen.piece = wQueenI; wQueen.position = colls[h]; wQueen.squareColor = sColor; wQueen.draw();
                         }else{
-                            wKing.draw(wKingI, colls[h]);
+                            wKing.piece = wKingI; wKing.position = colls[h]; wKing.squareColor = sColor; wKing.draw();
                         }
                         break;
                     case 7:
                         if(h === 0 || h === 7){
-                            h === 0 ? bTower0.draw(bTower, colls[h]) : bTower1.draw(bTower, colls[h]);
+                            if(h === 0){
+                                bTower0.piece = bTower; bTower0.position = colls[h]; bTower0.squareColor = sColor; bTower0.draw();
+                            }else{
+                                bTower1.piece = bTower; bTower1.position = colls[h]; bTower1.squareColor = sColor; bTower1.draw();
+                            }
                         }else if(h === 1 || h === 6){
-                            h === 1 ? bHorse0.draw(bHorse, colls[h]) : bHorse1.draw(bHorse, colls[h]);
+                            if(h === 1){
+                                bHorse0.piece = bHorse; bHorse0.position = colls[h]; bHorse0.squareColor = sColor; bHorse0.draw();
+                            }else{
+                                bHorse1.piece = bHorse; bHorse1.position = colls[h]; bHorse1.squareColor = sColor; bHorse1.draw();
+                            }
                         }else if(h === 2 || h === 5){
-                            h === 2 ? bBishop0.draw(bBishop, colls[h]) : bBishop1.draw(bBishop, colls[h]);
-                        }else if(h === 4){
-                            bQueen.draw(bQueenI, colls[h]);
+                            if(h === 2){
+                                bBishop0.piece = bBishop; bBishop0.position = colls[h]; bBishop0.squareColor = sColor; bBishop0.draw();
+                            }else{
+                                bBishop1.piece = bBishop; bBishop1.position = colls[h]; bBishop1.squareColor = sColor; bBishop1.draw();
+                            }
+                        }else if(h === 3){
+                            bQueen.piece = bQueenI; bQueen.position = colls[h]; bQueen.squareColor = sColor; bQueen.draw();
                         }else{
-                            bKing.draw(bKingI, colls[h]);
+                            bKing.piece = bKingI; bKing.position = colls[h]; bKing.squareColor = sColor; bKing.draw();
                         }
                         break;
                 }
-                board[w] = colls;
+                //board[w] = colls;
                 yPos += 87.5;
             }
             xPos += 87.5;

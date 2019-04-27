@@ -7,13 +7,26 @@
 
 body {
     background-color: rgba(71, 28, 3, 0.671);
-}
-
-header {
-    padding: 25px;
+    width: 100%;
+    height: 100%;
     text-align: center;
-    font-size: 48px;
-    font-weight: bold;
-    background-color: white;
 }
 
+#board {
+    border: 1px solid black;
+    margin-top: 5%;
+}
+
+#host {
+    position: absolute;
+    top: 30%;
+    left: 0px;
+    border: 1px solid black;
+}
+
+#guest {
+    top: 30%;
+    right: 0px;
+    position: absolute;
+    border: 1px solid black;
+}

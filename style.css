@@ -19,14 +19,19 @@ body {
 
 #host {
     position: absolute;
-    top: 30%;
+    top: 20%;
     left: 0px;
     border: 1px solid black;
 }
 
 #guest {
-    top: 30%;
+    top: 20%;
     right: 0px;
     position: absolute;
     border: 1px solid black;
+}
+
+.icon {
+    width: 100px;
+    height: 100px;
 }

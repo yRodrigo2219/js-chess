@@ -99,6 +99,19 @@ class Piece {
         });
     }
 
+    move(position){
+        this.exclude();
+
+        this.position = position;
+        this.squareColor = positionToSquareColor(position);
+
+        captured(position);
+
+        this.draw();
+
+        return true;
+    }
+
 }
 
 class Pawn extends Piece {
@@ -136,31 +149,16 @@ class Pawn extends Piece {
                 if((momentNumber === number && board[char][number] === '') ||
                     (momentNumber+1 === number && board[char][number].team === 'black') ||
                     (momentNumber-1 === number && board[char][number].team === 'black')){
-
-                        this.exclude();
-
-                        this.position = position;
-                        this.squareColor = positionToSquareColor(position);
-
-                        captured(position);
-
-                        this.draw();
-
                         this.firstMove = false;
-                        return true;
+                        super.move(position);
+
                     }
             }else if(this.firstMove){ // Se for o 1 movimento
                 if(momentCharIndex+2 === charIndex){
                     if(momentNumber === number && horizontalCheck(momentCharIndex, charIndex, number)){
-                        this.exclude();
-    
-                        this.position = position;
-                        this.squareColor = positionToSquareColor(position);
-    
-                        this.draw();
-    
                         this.firstMove = false;
-                        return true;
+                        super.move(position);
+
                     }
                 }
             }
@@ -169,31 +167,16 @@ class Pawn extends Piece {
                 if((momentNumber === number && board[char][number] === '') ||
                     (momentNumber+1 === number && board[char][number].team === 'white') ||
                     (momentNumber-1 === number && board[char][number].team === 'white')){
-
-                        this.exclude();
-
-                        this.position = position;
-                        this.squareColor = positionToSquareColor(position);
-
-                        captured(position);
-
-                        this.draw();
-
                         this.firstMove = false;
-                        return true;
+                        super.move(position);
+                        
                     }
             }else if(this.firstMove){ // Se for o 1 movimento
                 if(momentCharIndex-2 === charIndex){
                     if(momentNumber === number && horizontalCheck(momentCharIndex, charIndex, number)){
-                        this.exclude();
-    
-                        this.position = position;
-                        this.squareColor = positionToSquareColor(position);
-    
-                        this.draw();
-    
                         this.firstMove = false;
-                        return true;
+                        super.move(position);
+                        
                     }
                 }
             }
@@ -216,14 +199,9 @@ class Queen extends Piece {
         super.exclude();
     }
 
-    move(pos){
-        this.exclude();
-
-        this.position = pos;
-        this.squareColor = positionToSquareColor(pos);
-        captured(pos);
-
-        this.draw();
+    move(position){
+        super.move(position);
+        
     }
 
 }
@@ -241,14 +219,9 @@ class King extends Piece {
         super.exclude();
     }
 
-    move(pos){
-        this.exclude();
-
-        this.position = pos;
-        this.squareColor = positionToSquareColor(pos);
-        captured(pos);
-
-        this.draw();
+    move(position){
+        super.move(position);
+        
     }
 
 }
@@ -283,23 +256,13 @@ class Tower extends Piece {
 
         if(char === momentChar && board[char][number].team != this.team){
             if(verticalCheck(momentNumber, number, char)){
-                this.exclude();
-
-                this.position = position;
-                this.squareColor = positionToSquareColor(position);
-                captured(position);
-
-                this.draw();
+                super.move(position);
+                
             }
         }else if(number === momentNumber && board[char][number].team != this.team){
             if(horizontalCheck(momentCharIndex, charIndex, number)){
-                this.exclude();
-
-                this.position = position;
-                this.squareColor = positionToSquareColor(position);
-                captured(position);
-
-                this.draw();
+                super.move(position);
+                
             }
         }
         
@@ -320,14 +283,29 @@ class Horse extends Piece {
         super.exclude();
     }
 
-    move(pos){
-        this.exclude();
+    move(position){
+        const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
-        this.position = pos;
-        this.squareColor = positionToSquareColor(pos);
-        captured(pos);
+        let char = position.substring(0, 1);
+        let charIndex = chars.indexOf(char);
 
-        this.draw();
+        let number = position.substring(1, 2);
+        number = parseInt(number);
+
+        let momentChar = this.position.substring(0, 1);
+        let momentCharIndex = chars.indexOf(momentChar);
+
+        let momentNumber = this.position.substring(1, 2);
+        momentNumber = parseInt(momentNumber);
+
+        if(char != momentChar 
+            && number != momentNumber
+            && Math.abs(number - momentNumber)+Math.abs(charIndex - momentCharIndex) === 3
+            && board[char][number].team != this.team){
+                super.move(position);
+
+        }
+        
     }
 
 }
@@ -345,14 +323,9 @@ class Bishop extends Piece {
         super.exclude();
     }
 
-    move(pos){
-        this.exclude();
-
-        this.position = pos;
-        this.squareColor = positionToSquareColor(pos);
-        captured(pos);
-
-        this.draw();
+    move(position){
+        super.move(position);
+        
     }
 
 }

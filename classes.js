@@ -220,8 +220,27 @@ class King extends Piece {
     }
 
     move(position){
-        super.move(position);
-        
+        const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
+        let char = position.substring(0, 1);
+        let charIndex = chars.indexOf(char);
+
+        let number = position.substring(1, 2);
+        number = parseInt(number);
+
+        let momentChar = this.position.substring(0, 1);
+        let momentCharIndex = chars.indexOf(momentChar);
+
+        let momentNumber = this.position.substring(1, 2);
+        momentNumber = parseInt(momentNumber);
+
+        if((Math.abs(number - momentNumber) + Math.abs(charIndex - momentCharIndex) === 1
+            || (Math.abs(number - momentNumber) === 1 && Math.abs(charIndex - momentCharIndex) === 1)) 
+            && board[char][number].team != this.team){
+                super.move(position);
+
+        }
+
     }
 
 }
@@ -300,7 +319,7 @@ class Horse extends Piece {
 
         if(char != momentChar 
             && number != momentNumber
-            && Math.abs(number - momentNumber)+Math.abs(charIndex - momentCharIndex) === 3
+            && Math.abs(number - momentNumber) + Math.abs(charIndex - momentCharIndex) === 3
             && board[char][number].team != this.team){
                 super.move(position);
 

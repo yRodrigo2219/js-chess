@@ -3,7 +3,11 @@ var pieceSelected = '';
 function startListeners(){
     canvas.addEventListener('click', select);
     canvas.addEventListener('mousemove', piece);
-    canvas.addEventListener('mouseup', drop);
+    //canvas.addEventListener('mouseup', drop);
+}
+
+function nextPlayer(){
+
 }
 
 function getMouesPosition(pos) {
@@ -21,7 +25,9 @@ function select(pos){
             pieceSelected = board[char][number];
         }else{
             console.log(pieceSelected);
-            pieceSelected.move(square);
+            if(pieceSelected.move(square)){
+                nextPlayer();
+            }
             pieceSelected = '';
         }
     }else{
@@ -41,8 +47,4 @@ function piece(pos){
         return chars[charIndex] + number;
     }
     return 'out';
-}
-
-function drop(){
-
 }

@@ -25,11 +25,141 @@ function positionToSquareColor(position){
     }
 }
 
+function captured(position){
+    let char = position.substring(0, 1);
+    let number = position.substring(1, 2);
+
+    if(board[char][number] != ''){
+        board[char][number].exclude();
+    }
+}
+
 class Pawn {
-    constructor(piece, position, squareColor){
+    constructor(piece, position, squareColor, team){
         this.piece = piece;
         this.position = position;
         this.squareColor = squareColor;
+        this.firstMove = true;
+        this.team = team;
+    }
+
+    draw(){
+        convertPosition(this.position, (xPos, yPos)=>{
+            ctx.drawImage(this.piece, xPos, yPos, 87.5, 87.5);
+
+            const square = this.position;
+            const char = square.substring(0, 1);
+            const number = square.substring(1, 2);
+            board[char][number] = this;
+        });
+    }
+
+    exclude(){
+        convertPosition(this.position, (xPos, yPos)=>{
+            ctx.fillStyle = this.squareColor;
+            ctx.fillRect(xPos, yPos, 87.5, 87.5);
+
+            const square = this.position;
+            const char = square.substring(0, 1);
+            const number = square.substring(1, 2);
+            board[char][number] = '';
+        });
+    }
+
+    move(position){
+        const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+        const wPawn = document.getElementById('whitePawn');
+
+        let char = position.substring(0, 1);
+        let charIndex = chars.indexOf(char);
+
+        let number = position.substring(1, 2);
+        number = parseInt(number);
+
+        let momentChar = this.position.substring(0, 1);
+        let momentCharIndex = chars.indexOf(momentChar);
+
+        let momentNumber = this.position.substring(1, 2);
+        momentNumber = parseInt(momentNumber);
+        
+        if(this.piece === wPawn){
+            if(momentCharIndex+1 === charIndex){
+                if((momentNumber === number && board[char][number] === '') ||
+                    (momentNumber+1 === number && board[char][number] != '') ||
+                    (momentNumber-1 === number && board[char][number] != '')){
+
+                        this.exclude();
+
+                        this.position = position;
+                        this.squareColor = positionToSquareColor(position);
+
+                        captured(position);
+
+                        this.draw();
+
+                        this.firstMove = false;
+                        return true;
+                    }
+            }else if(this.firstMove){ // Se for o 1 movimento
+                if(momentCharIndex+2 === charIndex){
+                    if(momentNumber === number && board[char][number] === ''){
+                        this.exclude();
+    
+                        this.position = position;
+                        this.squareColor = positionToSquareColor(position);
+    
+                        this.draw();
+    
+                        this.firstMove = false;
+                        return true;
+                    }
+                }
+            }
+        }else{
+            if(momentCharIndex-1 === charIndex){
+                if((momentNumber === number && board[char][number] === '') ||
+                    (momentNumber+1 === number && board[char][number] != '') ||
+                    (momentNumber-1 === number && board[char][number] != '')){
+
+                        this.exclude();
+
+                        this.position = position;
+                        this.squareColor = positionToSquareColor(position);
+
+                        captured(position);
+
+                        this.draw();
+
+                        this.firstMove = false;
+                        return true;
+                    }
+            }else if(this.firstMove){ // Se for o 1 movimento
+                if(momentCharIndex-2 === charIndex){
+                    if(momentNumber === number && board[char][number] === ''){
+                        this.exclude();
+    
+                        this.position = position;
+                        this.squareColor = positionToSquareColor(position);
+    
+                        this.draw();
+    
+                        this.firstMove = false;
+                        return true;
+                    }
+                }
+            }
+        }
+        
+    }
+
+}
+
+class Queen {
+    constructor(piece, position, squareColor, team){
+        this.piece = piece;
+        this.position = position;
+        this.squareColor = squareColor;
+        this.team = team;
     }
 
     draw(){
@@ -60,41 +190,29 @@ class Pawn {
 
         this.position = pos;
         this.squareColor = positionToSquareColor(pos);
+        captured(pos);
 
         this.draw();
     }
 
 }
 
-class Queen {
-    constructor(piece, position){
-        this.piece = piece;
-        this.position = position;
-    }
-
-    draw(){
-        convertPosition(this.position, (xPos, yPos)=>{
-            ctx.drawImage(this.piece, xPos, yPos, 87.5, 87.5);
-        });
-    }
-
-    exclude(){
-        convertPosition(this.position, (xPos, yPos)=>{
-            ctx.fillStyle = this.squareColor;
-            ctx.fillRect(xPos, yPos, 87.5, 87.5);
-        });
-    }
-}
-
 class King {
-    constructor(piece, position){
+    constructor(piece, position, squareColor, team){
         this.piece = piece;
         this.position = position;
+        this.squareColor = squareColor;
+        this.team = team;
     }
 
     draw(){
         convertPosition(this.position, (xPos, yPos)=>{
             ctx.drawImage(this.piece, xPos, yPos, 87.5, 87.5);
+
+            const square = this.position;
+            const char = square.substring(0, 1);
+            const number = square.substring(1, 2);
+            board[char][number] = this;
         });
     }
 
@@ -102,19 +220,42 @@ class King {
         convertPosition(this.position, (xPos, yPos)=>{
             ctx.fillStyle = this.squareColor;
             ctx.fillRect(xPos, yPos, 87.5, 87.5);
+
+            const square = this.position;
+            const char = square.substring(0, 1);
+            const number = square.substring(1, 2);
+            board[char][number] = '';
         });
     }
+
+    move(pos){
+        this.exclude();
+
+        this.position = pos;
+        this.squareColor = positionToSquareColor(pos);
+        captured(pos);
+
+        this.draw();
+    }
+
 }
 
 class Tower {
-    constructor(piece, position){
+    constructor(piece, position, squareColor, team){
         this.piece = piece;
         this.position = position;
+        this.squareColor = squareColor;
+        this.team = team;
     }
 
     draw(){
         convertPosition(this.position, (xPos, yPos)=>{
             ctx.drawImage(this.piece, xPos, yPos, 87.5, 87.5);
+
+            const square = this.position;
+            const char = square.substring(0, 1);
+            const number = square.substring(1, 2);
+            board[char][number] = this;
         });
     }
 
@@ -122,19 +263,42 @@ class Tower {
         convertPosition(this.position, (xPos, yPos)=>{
             ctx.fillStyle = this.squareColor;
             ctx.fillRect(xPos, yPos, 87.5, 87.5);
+
+            const square = this.position;
+            const char = square.substring(0, 1);
+            const number = square.substring(1, 2);
+            board[char][number] = '';
         });
     }
+
+    move(pos){
+        this.exclude();
+
+        this.position = pos;
+        this.squareColor = positionToSquareColor(pos);
+        captured(pos);
+
+        this.draw();
+    }
+
 }
 
 class Horse {
-    constructor(piece, position){
+    constructor(piece, position, squareColor, team){
         this.piece = piece;
         this.position = position;
+        this.squareColor = squareColor;
+        this.team = team;
     }
 
     draw(){
         convertPosition(this.position, (xPos, yPos)=>{
             ctx.drawImage(this.piece, xPos, yPos, 87.5, 87.5);
+
+            const square = this.position;
+            const char = square.substring(0, 1);
+            const number = square.substring(1, 2);
+            board[char][number] = this;
         });
     }
 
@@ -142,19 +306,42 @@ class Horse {
         convertPosition(this.position, (xPos, yPos)=>{
             ctx.fillStyle = this.squareColor;
             ctx.fillRect(xPos, yPos, 87.5, 87.5);
+
+            const square = this.position;
+            const char = square.substring(0, 1);
+            const number = square.substring(1, 2);
+            board[char][number] = '';
         });
     }
+
+    move(pos){
+        this.exclude();
+
+        this.position = pos;
+        this.squareColor = positionToSquareColor(pos);
+        captured(pos);
+
+        this.draw();
+    }
+
 }
 
 class Bishop {
-    constructor(piece, position){
+    constructor(piece, position, squareColor, team){
         this.piece = piece;
         this.position = position;
+        this.squareColor = squareColor;
+        this.team = team;
     }
 
     draw(){
         convertPosition(this.position, (xPos, yPos)=>{
             ctx.drawImage(this.piece, xPos, yPos, 87.5, 87.5);
+
+            const square = this.position;
+            const char = square.substring(0, 1);
+            const number = square.substring(1, 2);
+            board[char][number] = this;
         });
     }
 
@@ -162,6 +349,22 @@ class Bishop {
         convertPosition(this.position, (xPos, yPos)=>{
             ctx.fillStyle = this.squareColor;
             ctx.fillRect(xPos, yPos, 87.5, 87.5);
+
+            const square = this.position;
+            const char = square.substring(0, 1);
+            const number = square.substring(1, 2);
+            board[char][number] = '';
         });
     }
+
+    move(pos){
+        this.exclude();
+
+        this.position = pos;
+        this.squareColor = positionToSquareColor(pos);
+        captured(pos);
+
+        this.draw();
+    }
+
 }

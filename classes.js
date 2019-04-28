@@ -68,6 +68,40 @@ function horizontalCheck(initPos, finPos, number){
     }
 }
 
+function diagonalCheck(finCharIndex, initCharIndex, finNumb, initNumber){
+    const horizontal = finCharIndex - initCharIndex;
+    const vertical = finNumb - initNumber;
+    const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+    
+    if(Math.abs(horizontal) != Math.abs(vertical)){
+        return false;
+    }
+    
+    if(horizontal > 0 && vertical > 0){
+        for(let i = 1; i < horizontal; i++){ // Tanto faz, se for um movimento válido Horizontal == Vertical
+            let numb = initNumber + i;
+            if(board[chars[initCharIndex + i]][numb.toString()] != '') return false;
+        }
+    }else if(horizontal < 0 && vertical < 0){
+        for(let i = 1; i < Math.abs(horizontal); i++){ // Tanto faz, se for um movimento válido Horizontal == Vertical
+            let numb = initNumber - i;
+            if(board[chars[initCharIndex - i]][numb.toString()] != '') return false;
+        }
+    }else if(horizontal > 0 && vertical < 0){
+        for(let i = 1; i < horizontal; i++){ // Tanto faz, se for um movimento válido Horizontal == Vertical
+            let numb = initNumber - i;
+            if(board[chars[initCharIndex + i]][numb.toString()] != '') return false;
+        }
+    }else{
+        for(let i = 1; i < Math.abs(horizontal); i++){ // Tanto faz, se for um movimento válido Horizontal == Vertical
+            let numb = initNumber + i;
+            if(board[chars[initCharIndex - i]][numb.toString()] != '') return false;
+        }
+    }
+
+    return true;
+}
+
 class Piece {
     constructor(piece, position, squareColor, team){
         this.piece = piece;
@@ -343,7 +377,27 @@ class Bishop extends Piece {
     }
 
     move(position){
-        super.move(position);
+        const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
+        let char = position.substring(0, 1);
+        let charIndex = chars.indexOf(char);
+
+        let number = position.substring(1, 2);
+        number = parseInt(number);
+
+        let momentChar = this.position.substring(0, 1);
+        let momentCharIndex = chars.indexOf(momentChar);
+
+        let momentNumber = this.position.substring(1, 2);
+        momentNumber = parseInt(momentNumber);
+        
+        if(Math.abs(charIndex - momentCharIndex) === Math.abs(number - momentNumber)
+            && char != momentChar && number != momentNumber
+            && board[char][number].team != this.team 
+            && diagonalCheck(charIndex, momentCharIndex, number, momentNumber)){
+                super.move(position);
+
+        }
         
     }
 
